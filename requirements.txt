@@ -1,0 +1,14 @@
+itertools
+json
+matplotlib.pyplot
+networkx
+nltk
+opendatasets
+openai==0.28
+os
+pandas
+re
+requests
+scikit-learn
+spacy
+time
