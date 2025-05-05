@@ -10,7 +10,7 @@ from tqdm import tqdm
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.api_base = "https://api.together.xyz/v1"
 
-def ner_llama(sentences, batch_id=0):
+def ner_llama(sentences, sentence_ids):
     prompt = f"""You've got a task.
 
     Find all named entities in the following sentence using the BIO tagging format:
