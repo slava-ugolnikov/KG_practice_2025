@@ -1,112 +1,57 @@
 import os
 import json
+import openai
 import re
 import pandas as pd
-import openai
-from sklearn.metrics import precision_score, recall_score, f1_score
+from utils.helpers import parse_llm_output, evaluate
 
+openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_base = "https://api.together.xyz/v1"
 
-def run_llm_ner(data_dir: str, save_dir: str, api_key: str, logger):
-    # 1. Подготовка данных
-    def load_sentences(filepath):
-        final = []
-        sentences = []
-        with open(filepath, 'r') as f:
-            for line in f.readlines():
-                if line.strip() == '-DOCSTART- -X- -X- O' or line.strip() == '':
-                    if sentences:
-                        final.append(sentences)
-                        sentences = []
-                else:
-                    l = line.split(' ')
-                    sentences.append((l[0], l[3].strip()))
-        return final
+def ner_llama(sentences, batch_id=0):
+    prompt = f"""You've got a task.
 
-    conll_train = load_sentences(os.path.join(data_dir, 'train.txt'))
-    conll_test = load_sentences(os.path.join(data_dir, 'test.txt'))
+    Find all named entities in the following sentence using the BIO tagging format:
 
-    # Объединение и подготовка DataFrame
-    rows = []
-    for i, sentence in enumerate(conll_train):
-        for word, label in sentence:
-            rows.append({"Sentence_ID": i, "Entity": word, "Label": label})
-    df_conll = pd.DataFrame(rows)
-    sentences = df_conll.groupby('Sentence_ID')['Entity'].apply(lambda x: ' '.join(x)).tolist()
-    indexed_sentences = list(enumerate(sentences, start=1))
+    - Allowed labels: "B-LOC", "B-MISC", "B-ORG", "B-PER", "I-LOC", "I-MISC", "I-ORG", "I-PER", "O".
+    - Where:
+      - B- = beginning of an entity
+      - I- = inside an entity
+      - O = outside any entity
+    - Entity types:
+      - PERS — person
+      - LOC — location
+      - ORG — organization
+      - MISC — miscellaneous
+    For example George Bush would be tagged like that: George (B-PER) Bush (I-PER) - single word per entity strictly.
 
-    # 2. Настройка OpenAI API
-    openai.api_key = api_key
-    openai.api_base = "https://api.together.xyz/v1"
+    Notice that you should label not only entites, you should use 'O' label for words that are not named entities (they can be any part of speech: verbs, prepositions) and include them please in your output.
+    Also it is very important that sentences that starts with different numbers are separated. To remember it, include the number of sentence in the output.
 
-    def call_llm(sentences):
-        prompt = f"""You've got a task.
+    Example of an output:
+    Sentence 1: EU rejects German call to boycott British lamb;
+    Entities: ('EU', 'B-ORG') ('rejects', 'O') ('German', 'B-MISC') ('call', 'O') ('to', 'O') ('boycott', 'O') ('British', 'B-MISC') ('lamb', 'O') ('.', 'O').
 
-Find all named entities in the following sentence using the BIO tagging format...
+    Sentence: "{sentences}"
+    """
 
-(сокращено здесь, можно вставить весь prompt полностью)"""
+    for i, sentence in enumerate(sentences, 1):
+        prompt += f"{i}. {sentence}\n"
+    prompt += "\nAnswer:\n"
 
-        for i, (_, sentence) in enumerate(sentences, 1):
-            prompt += f"{i}. {sentence}\n"
-        prompt += "\nAnswer:\n"
+    response = openai.ChatCompletion.create(
+        model="meta-llama/Llama-3-8b-chat-hf",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0,
+        max_tokens=2048
+    )
+    return response["choices"][0]["message"]["content"]
 
-        response = openai.ChatCompletion.create(
-            model="meta-llama/Llama-3-8b-chat-hf",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0,
-            max_tokens=2048
-        )
+def run_llm_ner(conll_data, df_conll):
+    sentences = [" ".join([w for w, _ in s]) for s in conll_data[:20]]
+    raw_output = ner_llama(sentences)
+    df_llm = parse_llm_output(raw_output)
+    precision, recall, f1 = evaluate(df_conll, df_llm)
 
-        return response["choices"][0]["message"]["content"]
-
-    os.makedirs(save_dir, exist_ok=True)
-    all_output = []
-
-    # 3. Обработка батчами
-    batch_size = 20
-    for i in range(0, len(indexed_sentences), batch_size):
-        batch = indexed_sentences[i:i + batch_size]
-        output = call_llm(batch)
-        file_path = os.path.join(save_dir, f'batch_{i // batch_size}.txt')
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(output)
-        all_output.append(output)
-
-    # 4. Парсинг результатов
-    pattern = r"Entities: ((?:\('.*?', '.*?'\) ?)+)"
-    entity_dict = {}
-    counter = 1
-
-    for text in all_output:
-        matches = re.findall(pattern, text)
-        for entities_raw in matches:
-            entities = re.findall(r"\('(.*?)', '(.*?)'\)", entities_raw)
-            entity_dict[counter] = entities
-            counter += 1
-
-    rows = []
-    for sentence_id, entities in entity_dict.items():
-        for entity, label in entities:
-            rows.append({
-                'Sentence_ID': sentence_id,
-                'Entity': entity,
-                'Label_LLM': label
-            })
-
-    df_LLM = pd.DataFrame(rows)
-
-    # 5. Сравнение с размеченными
-    merged_df = pd.merge(df_conll, df_LLM, on=['Sentence_ID', 'Entity'], how='inner')
-    allowed_labels = ['B-LOC', 'B-MISC', 'B-ORG', 'B-PER', 'I-LOC', 'I-MISC', 'I-ORG', 'I-PER', 'O']
-    merged_df = merged_df[merged_df["Label_LLM"].isin(allowed_labels)]
-
-    # 6. Метрики
-    precision = precision_score(merged_df['Label'], merged_df['Label_LLM'], average='weighted')
-    recall = recall_score(merged_df['Label'], merged_df['Label_LLM'], average='weighted')
-    f1 = f1_score(merged_df['Label'], merged_df['Label_LLM'], average='weighted')
-
-    logger.info(f"[LLM NER] Precision: {precision:.4f}")
-    logger.info(f"[LLM NER] Recall: {recall:.4f}")
-    logger.info(f"[LLM NER] F1: {f1:.4f}")
-
-    return precision, recall, f1
+    logging.info(f"LLM Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
 
