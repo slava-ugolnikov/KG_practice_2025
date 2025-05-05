@@ -52,6 +52,8 @@ def run_llm_ner(conll_data, df_conll):
     sentences = [" ".join([w for w, _ in s]) for s in conll_data[:20]]
     raw_output = ner_llama(sentences)
     df_llm = parse_llm_output(raw_output)
+    print(df_conll.columns)
+    print(df_llm.columns)
     precision, recall, f1 = evaluate(df_conll, df_llm)
     print(precision, recall, f1)
 
