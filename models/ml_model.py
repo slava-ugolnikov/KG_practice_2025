@@ -2,7 +2,7 @@ import logging
 import spacy
 import pandas as pd
 from spacy.training import offsets_to_biluo_tags, biluo_to_iob
-from utils.helpers import evaluate
+from utils.helpers import evaluate, map_spacy_labels_to_conll
 
 def run_ml_ner(conll_data, df_conll):
     nlp = spacy.load("en_core_web_sm")
@@ -22,6 +22,7 @@ def run_ml_ner(conll_data, df_conll):
         all_sentence_ids.extend([i] * len(doc))
 
     df_ml = pd.DataFrame({"Sentence_ID": all_sentence_ids, "Entity": all_tokens, "Label_ML": all_bio_tags})
+    df_ml['Label_ML'] = map_spacy_labels_to_conll(df_ml['Label_ML'])
     print("True labels:", df_conll['Label'].unique())
     print("Predicted labels:", df_ml['Label_ML'].unique())
     precision, recall, f1 = evaluate(df_conll, df_ml, pred_col='Label_ML')
