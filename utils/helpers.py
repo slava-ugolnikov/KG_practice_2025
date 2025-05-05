@@ -62,6 +62,7 @@ def map_spacy_labels_to_conll(labels):
 
 def evaluate(df_true, df_pred, pred_col='Label'):
     df_merged = pd.merge(df_true, df_pred, on=['Sentence_ID', 'Entity'])
+    print(df_merged)
     precision = precision_score(df_merged['Label'], df_merged[pred_col], average='weighted')
     recall = recall_score(df_merged['Label'], df_merged[pred_col], average='weighted')
     f1 = f1_score(df_merged['Label'], df_merged[pred_col], average='weighted')
