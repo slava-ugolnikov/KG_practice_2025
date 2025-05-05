@@ -1,3 +1,4 @@
+import logging
 import spacy
 import pandas as pd
 from spacy.training import offsets_to_biluo_tags, biluo_to_iob
