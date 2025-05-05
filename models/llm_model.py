@@ -62,6 +62,7 @@ def ner_llama(sentences, batch_id=0):
 
 
 def run_llm_ner(conll_data, df_conll, batch_size=20):
+    print(conll_data[:100])
     sentences = [" ".join([w for w, _ in s]) for s in conll_data]
     all_dfs = []
 
@@ -71,6 +72,9 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
             raw_output = ner_llama(batch, batch_id=i // batch_size)
             print(raw_output)
             df_llm_batch = parse_llm_output(raw_output)
+            allowed_labels = ['B-LOC', 'B-MISC', 'B-ORG', 'B-PER', 'I-LOC', 'I-MISC', 'I-ORG', 'I-PER', 'O']
+            invalid_rows = df_llm_batch[~df_llm_batch["Label_LLM"].isin(allowed_labels)]
+            df_llm_batch = df_llm_batch.drop(invalid_rows.index)
             all_dfs.append(df_llm_batch)
         except Exception as e:
             print(f"[!] Ошибка в батче {i // batch_size}: {e}")
