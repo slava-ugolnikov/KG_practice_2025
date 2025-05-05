@@ -49,17 +49,6 @@ def ner_llama(sentences, batch_id=0):
     )
     return response["choices"][0]["message"]["content"]
 
-# def run_llm_ner(conll_data, df_conll):
-#     sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
-#     raw_output = ner_llama(sentences)
-#     df_llm = parse_llm_output(raw_output)
-#     print(df_conll.columns)
-#     print(df_llm.columns)
-#     precision, recall, f1 = evaluate(df_conll, df_llm)
-#     print(precision, recall, f1)
-
-#     logging.info(f"LLM Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
-
 
 def run_llm_ner(conll_data, df_conll, batch_size=20):
     sentences = [" ".join([w for w, _ in s]) for s in conll_data[:100]]
@@ -69,7 +58,6 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
         batch = sentences[i:i + batch_size]
         try:
             raw_output = ner_llama(batch, batch_id=i // batch_size)
-            print(raw_output)
             df_llm_batch = parse_llm_output(raw_output)
             allowed_labels = ['B-LOC', 'B-MISC', 'B-ORG', 'B-PER', 'I-LOC', 'I-MISC', 'I-ORG', 'I-PER', 'O']
             invalid_rows = df_llm_batch[~df_llm_batch["Label_LLM"].isin(allowed_labels)]
