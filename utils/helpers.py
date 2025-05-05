@@ -17,7 +17,7 @@ def parse_llm_output(text):
             rows.append({"Sentence_ID": sid, "Entity": entity, "Label_LLM": label})
     df = pd.DataFrame(rows)
     allowed_labels = ['B-LOC', 'B-MISC', 'B-ORG', 'B-PER', 'I-LOC', 'I-MISC', 'I-ORG', 'I-PER', 'O']
-    invalid_rows = df[~df["Label"].isin(allowed_labels)]
+    invalid_rows = df[~df["Label_LLM"].isin(allowed_labels)]
     df = df.drop(invalid_rows.index)
     print(df.Label_LLM.unique())
     print(df.head())
