@@ -5,6 +5,7 @@ import openai
 import re
 import pandas as pd
 from utils.helpers import parse_llm_output, evaluate
+from tqdm import tqdm
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.api_base = "https://api.together.xyz/v1"
@@ -48,14 +49,48 @@ def ner_llama(sentences, batch_id=0):
     )
     return response["choices"][0]["message"]["content"]
 
-def run_llm_ner(conll_data, df_conll):
-    sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
-    raw_output = ner_llama(sentences)
-    df_llm = parse_llm_output(raw_output)
-    print(df_conll.columns)
-    print(df_llm.columns)
+# def run_llm_ner(conll_data, df_conll):
+#     sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
+#     raw_output = ner_llama(sentences)
+#     df_llm = parse_llm_output(raw_output)
+#     print(df_conll.columns)
+#     print(df_llm.columns)
+#     precision, recall, f1 = evaluate(df_conll, df_llm)
+#     print(precision, recall, f1)
+
+#     logging.info(f"LLM Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
+
+
+def run_llm_ner(conll_data, df_conll, batch_size=20):
+    sentences = [" ".join([w for w, _ in s]) for s in conll_data]
+    all_dfs = []
+
+    for i in tqdm(range(0, len(sentences), batch_size), desc="Processing batches"):
+        batch = sentences[i:i + batch_size]
+        try:
+            raw_output = ner_llama(batch, batch_id=i // batch_size)
+            df_llm_batch = parse_llm_output(raw_output)
+            all_dfs.append(df_llm_batch)
+        except Exception as e:
+            print(f"[!] Ошибка в батче {i // batch_size}: {e}")
+            continue
+
+    df_llm = pd.concat(all_dfs, ignore_index=True)
+
     precision, recall, f1 = evaluate(df_conll, df_llm)
-    print(precision, recall, f1)
+    print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
 
     logging.info(f"LLM Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
+
+
+
+
+
+
+
+
+
+
+
+    
 
