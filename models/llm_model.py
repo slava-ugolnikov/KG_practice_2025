@@ -37,8 +37,20 @@ def ner_llama(sentences, batch_id=0):
     Sentence: "{sentences}"
     """
 
-    for i, sentence in enumerate(sentences, 1):
-        prompt += f"{i}. {sentence}\n"
+    # for i, sentence in enumerate(sentences, 1):
+    #     prompt += f"{i}. {sentence}\n"
+    # prompt += "\nAnswer:\n"
+
+    # response = openai.ChatCompletion.create(
+    #     model="meta-llama/Llama-3-8b-chat-hf",
+    #     messages=[{"role": "user", "content": prompt}],
+    #     temperature=0,
+    #     max_tokens=2048
+    # )
+    # return response["choices"][0]["message"]["content"]
+
+    for sid, sentence in zip(sentence_ids, sentences):
+        prompt += f"Sentence {sid}: {sentence}\n"
     prompt += "\nAnswer:\n"
 
     response = openai.ChatCompletion.create(
