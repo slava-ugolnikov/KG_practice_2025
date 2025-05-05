@@ -15,8 +15,13 @@ def parse_llm_output(text):
     for sid, ents in entity_dict.items():
         for entity, label in ents:
             rows.append({"Sentence_ID": sid, "Entity": entity, "Label_LLM": label})
-    print(pd.DataFrame(rows))
-    return pd.DataFrame(rows)
+    df = pd.DataFrame(rows)
+    allowed_labels = ['B-LOC', 'B-MISC', 'B-ORG', 'B-PER', 'I-LOC', 'I-MISC', 'I-ORG', 'I-PER', 'O']
+    invalid_rows = df[~df["Label"].isin(allowed_labels)]
+    df = df.drop(invalid_rows.index)
+    print(df.Label_LLM.unique())
+    print(df.head())
+    return df
 
 def map_spacy_labels_to_conll(labels):
     label_map = {'B-ORG': 'B-ORG', 
@@ -60,6 +65,7 @@ def map_spacy_labels_to_conll(labels):
 def evaluate(df_true, df_pred, pred_col='Label'):
     df_merged = pd.merge(df_true, df_pred, on=['Sentence_ID', 'Entity'])
     precision = precision_score(df_merged['Label'], df_merged[pred_col], average='weighted')
+    print(df_merged[pred_col])
     recall = recall_score(df_merged['Label'], df_merged[pred_col], average='weighted')
     f1 = f1_score(df_merged['Label'], df_merged[pred_col], average='weighted')
     return precision, recall, f1
