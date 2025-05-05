@@ -69,6 +69,7 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
         batch = sentences[i:i + batch_size]
         try:
             raw_output = ner_llama(batch, batch_id=i // batch_size)
+            print(raw_output)
             df_llm_batch = parse_llm_output(raw_output)
             all_dfs.append(df_llm_batch)
         except Exception as e:
