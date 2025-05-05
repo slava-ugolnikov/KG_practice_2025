@@ -7,7 +7,6 @@ from utils.helpers import evaluate
 def run_ml_ner(conll_data, df_conll):
     nlp = spacy.load("en_core_web_sm")
     texts = [" ".join([w for w, _ in s]) for s in conll_data]
-    print(texts)
 
     all_tokens = []
     all_bio_tags = []
@@ -23,6 +22,7 @@ def run_ml_ner(conll_data, df_conll):
         all_sentence_ids.extend([i] * len(doc))
 
     df_ml = pd.DataFrame({"Sentence_ID": all_sentence_ids, "Entity": all_tokens, "Label_ML": all_bio_tags})
+    print(df_conll, df_ml)
     precision, recall, f1 = evaluate(df_conll, df_ml, pred_col='Label_ML')
 
     logging.info(f"ML Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
