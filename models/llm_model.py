@@ -7,6 +7,7 @@ import pandas as pd
 from utils.helpers import parse_llm_output, evaluate
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_base = "https://api.together.xyz/v1"
 
 def ner_llama(sentences, batch_id=0):
     prompt = f"""You've got a task.
