@@ -14,7 +14,7 @@ def parse_llm_output(text):
     rows = []
     for sid, ents in entity_dict.items():
         for entity, label in ents:
-            rows.append({"Sentence_ID": sid, "Entity": entity, "Label": label})
+            rows.append({"Sentence_ID": sid, "Entity": entity, "Label_LLM": label})
     return pd.DataFrame(rows)
 
 def map_spacy_labels_to_conll(labels):
