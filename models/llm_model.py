@@ -53,6 +53,7 @@ def run_llm_ner(conll_data, df_conll):
     raw_output = ner_llama(sentences)
     df_llm = parse_llm_output(raw_output)
     precision, recall, f1 = evaluate(df_conll, df_llm)
+    print(precision, recall, f1)
 
     logging.info(f"LLM Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
 
