@@ -22,8 +22,8 @@ def run_ml_ner(conll_data, df_conll):
         all_sentence_ids.extend([i] * len(doc))
 
     df_ml = pd.DataFrame({"Sentence_ID": all_sentence_ids, "Entity": all_tokens, "Label_ML": all_bio_tags})
-    print(df_ml.head())
-    print(df_conll.head())
+    print("True labels:", df_conll['Label'].unique())
+    print("Predicted labels:", df_ml['Label_ML'].unique())
     precision, recall, f1 = evaluate(df_conll, df_ml, pred_col='Label_ML')
 
     logging.info(f"ML Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
