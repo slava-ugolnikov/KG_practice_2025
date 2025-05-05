@@ -17,6 +17,45 @@ def parse_llm_output(text):
             rows.append({"Sentence_ID": sid, "Entity": entity, "Label": label})
     return pd.DataFrame(rows)
 
+def map_spacy_labels_to_conll(labels):
+    label_map = {'B-ORG': 'B-ORG', 
+             'O': 'O', 
+             'I-ORG': 'I-ORG', 
+             'B-NORP': 'B-MISC', 
+             'B-PERSON': 'B-PER', 
+             'I-PERSON': 'I-PER', 
+             'B-LOC': 'B-LOC', 
+             'B-GPE': 'B-LOC', 
+             'B-DATE': 'B-MISC',
+             'I-DATE': 'I-MISC', 
+             'B-CARDINAL': 'B-MISC', 
+             'I-CARDINAL': 'I-MISC',
+             'B-QUANTITY': 'B-MISC', 
+             'I-QUANTITY': 'I-MISC', 
+             'B-PERCENT': 'B-MISC', 
+             'I-PERCENT': 'I-MISC', 
+             'B-MONEY': 'B-MISC',
+             'I-MONEY': 'I-MISC', 
+             'B-LANGUAGE': 'B-MISC', 
+             'B-TIME': 'B-MISC', 
+             'I-TIME': 'I-MISC', 
+             'B-ORDINAL': 'B-MISC',
+             'B-EVENT': 'B-MISC', 
+             'I-EVENT': 'I-MISC', 
+             'B-PRODUCT': 'B-MISC', 
+             'I-GPE': 'I-LOC', 
+             'I-LOC': 'I-LOC', 
+             'I-NORP': 'I-MISC', 
+             'B-FAC': 'B-MISC',
+             'I-FAC': 'I-MISC', 
+             'B-LAW': 'B-MISC', 
+             'I-LAW': 'I-MISC', 
+             'B-WORK_OF_ART': 'B-MISC', 
+             'I-WORK_OF_ART': 'I-MISC',
+             'I-PRODUCT': 'I-MISC'}
+    return labels.map(label_map).fillna('O')
+
+
 def evaluate(df_true, df_pred, pred_col='Label'):
     df_merged = pd.merge(df_true, df_pred, on=['Sentence_ID', 'Entity'])
     print(df_merged.columns)
