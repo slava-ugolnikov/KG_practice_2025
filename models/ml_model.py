@@ -7,6 +7,7 @@ from utils.helpers import evaluate
 def run_ml_ner(conll_data, df_conll):
     nlp = spacy.load("en_core_web_sm")
     texts = [" ".join([w for w, _ in s]) for s in conll_data]
+    print(texts)
 
     all_tokens = []
     all_bio_tags = []
