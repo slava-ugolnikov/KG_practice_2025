@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 def load_sentences(filepath):
     final, sentence = [], []
     with open(filepath, 'r') as f:
