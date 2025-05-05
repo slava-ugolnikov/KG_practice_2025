@@ -1,7 +1,7 @@
 import argparse
 import logging
-from content.KG_practice_2025.models.llm_model import run_llm_ner
-from content.KG_practice_2025.models.ml_model import run_ml_ner
+from llm_model import run_llm_ner
+from ml_model import run_ml_ner
 from dataset.conll_loader import load_all_conll_sets
 
 logging.basicConfig(filename='results.log', level=logging.INFO, format='%(asctime)s - %(message)s')
