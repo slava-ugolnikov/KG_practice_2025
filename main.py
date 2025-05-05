@@ -1,27 +1,25 @@
+import argparse
 import logging
-from models.classic_model import run_classic_ner
 from models.llm_model import run_llm_ner
+from models.ml_model import run_ml_ner
+from dataset.conll_loader import load_all_conll_sets
 
-def setup_logger():
-    logger = logging.getLogger("NER_Evaluation")
-    logger.setLevel(logging.INFO)
-    handler = logging.StreamHandler()
-    formatter = logging.Formatter('[%(asctime)s] %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    return logger
+logging.basicConfig(filename='results.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
+def main():
+    parser = argparse.ArgumentParser(description="Run NER experiments")
+    parser.add_argument("--model", choices=["llm", "ml"], required=True, help="Model to run")
+    args = parser.parse_args()
+
+    logging.info(f"Starting experiment with model: {args.model}")
+    
+    conll_train, conll_test, conll_valid, df_conll = load_all_conll_sets()
+
+    if args.model == "llm":
+        run_llm_ner(conll_train, df_conll)
+    elif args.model == "ml":
+        run_ml_ner(conll_train, df_conll)
 
 if __name__ == "__main__":
-    logger = setup_logger()
-
-    data_dir = "dataset/"
-    save_dir = "ner_results/"
-    api_key = "<your-openai-api-key>"
-
-    logger.info("Запуск классической модели")
-    run_classic_ner(data_dir=data_dir, logger=logger)
-
-    logger.info("Запуск LLM модели")
-    run_llm_ner(data_dir=data_dir, save_dir=save_dir, api_key=api_key, logger=logger)
+    main()
 
