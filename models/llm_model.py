@@ -49,7 +49,7 @@ def ner_llama(sentences, batch_id=0):
     return response["choices"][0]["message"]["content"]
 
 def run_llm_ner(conll_data, df_conll):
-    sentences = [" ".join([w for w, _ in s]) for s in conll_data[:20]]
+    sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
     raw_output = ner_llama(sentences)
     df_llm = parse_llm_output(raw_output)
     print(df_conll.columns)
