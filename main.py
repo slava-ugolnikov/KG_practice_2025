@@ -1,7 +1,7 @@
 import argparse
 import logging
-from models.llm_model import run_llm_ner
-from models.ml_model import run_ml_ner
+from models.llm_model.py import run_llm_ner
+from models.ml_model.py import run_ml_ner
 from dataset.conll_loader import load_all_conll_sets
 
 logging.basicConfig(filename='results.log', level=logging.INFO, format='%(asctime)s - %(message)s')
