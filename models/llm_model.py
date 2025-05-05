@@ -7,7 +7,6 @@ import pandas as pd
 from utils.helpers import parse_llm_output, evaluate
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.api_base = "https://api.together.xyz/v1"
 
 def ner_llama(sentences, batch_id=0):
     prompt = f"""You've got a task.
@@ -49,7 +48,7 @@ def ner_llama(sentences, batch_id=0):
     return response["choices"][0]["message"]["content"]
 
 def run_llm_ner(conll_data, df_conll):
-    sentences = [" ".join([w for w, _ in s]) for s in conll_data[:100]]
+    sentences = [" ".join([w for w, _ in s]) for s in conll_data[:20]]
     raw_output = ner_llama(sentences)
     df_llm = parse_llm_output(raw_output)
     print(df_conll.columns)
