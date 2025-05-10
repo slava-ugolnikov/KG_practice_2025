@@ -17,9 +17,9 @@ def ner_llama(sentences, sentence_ids):
 
     - Allowed labels: "B-LOC", "B-MISC", "B-ORG", "B-PER", "I-LOC", "I-MISC", "I-ORG", "I-PER", "O".
     - Where:
-      - B- = beginning of an entity
-      - I- = inside an entity
-      - O = outside any entity
+      - B — beginning of an entity
+      - I — inside an entity
+      - O — outside any entity
     - Entity types:
       - PERS — person
       - LOC — location
