@@ -54,7 +54,7 @@ def ner_llama(sentences, sentence_ids):
 
 
 def run_llm_ner(conll_data, df_conll, batch_size=20):
-    pre_sentences = [" ".join([w for w, _ in s]) for s in conll_data[:500]]
+    pre_sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
     rows_id = [i for i in range(1, len(pre_sentences))]
     sentences = list(zip(rows_id, pre_sentences))
     all_dfs = []
@@ -65,9 +65,7 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
         ids = [id for id, text in batch]
         try:
             raw_output = ner_llama(texts, ids)
-            print(raw_output)
             df_llm_batch = parse_llm_output(raw_output, ids[0])
-            print(df_llm_batch)
             all_dfs.append(df_llm_batch)
         except Exception as e:
             print(f"[!] Ошибка в батче {i // batch_size}: {e}")
