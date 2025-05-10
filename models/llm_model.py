@@ -58,20 +58,23 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
 
     for i in tqdm(range(0, len(sentences), batch_size), desc="Processing batches"):
         batch = sentences[i:i + batch_size]
+        print(batch)
         sentences = [text for id, text in batch]
-        sentence_ids = [id for id, text in data]
-        try:
-            raw_output = ner_llama(sentences, sentence_ids)
-            df_llm_batch = parse_llm_output(raw_output)
-            all_dfs.append(df_llm_batch)
-        except Exception as e:
-            print(f"[!] Ошибка в батче {i // batch_size}: {e}")
-            continue
+        print(sentences)
+        sentence_ids = [id for id, text in batch]
+        print(sentence_ids)
+    #     try:
+    #         raw_output = ner_llama(sentences, sentence_ids)
+    #         df_llm_batch = parse_llm_output(raw_output)
+    #         all_dfs.append(df_llm_batch)
+    #     except Exception as e:
+    #         print(f"[!] Ошибка в батче {i // batch_size}: {e}")
+    #         continue
 
-    df_llm = pd.concat(all_dfs, ignore_index=True)
-    print(df_llm.Label_LLM.unique())
-    precision, recall, f1 = evaluate(df_conll, df_llm)
-    print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
+    # df_llm = pd.concat(all_dfs, ignore_index=True)
+    # print(df_llm.Label_LLM.unique())
+    # precision, recall, f1 = evaluate(df_conll, df_llm)
+    # print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
 
 
 
