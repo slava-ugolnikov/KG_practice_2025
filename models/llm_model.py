@@ -50,7 +50,7 @@ def ner_llama(sentences, sentence_ids):
     return response["choices"][0]["message"]["content"]
 
 
-def run_llm_ner(conll_data, df_conll, batch_size=20):)
+def run_llm_ner(conll_data, df_conll, batch_size=20):
     print(df_conll[:10])
     # pre_sentences = [" ".join([w for w, _ in s]) for s in conll_data[:50]]
     # rows_id = [i for i in range(1, len(pre_sentences))]
