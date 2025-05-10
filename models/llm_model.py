@@ -59,12 +59,12 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
     for i in tqdm(range(0, len(sentences), batch_size), desc="Processing batches"):
         batch = sentences[i:i + batch_size]
         print(batch)
-        sentences = [text for id, text in batch]
-        print(sentences)
-        sentence_ids = [id for id, text in batch]
+        texts = [text for id, text in batch]
+        print(texts)
+        ids = [id for id, text in batch]
         print(sentence_ids)
         try:
-            raw_output = ner_llama(sentences, sentence_ids)
+            raw_output = ner_llama(texts, ids)
             df_llm_batch = parse_llm_output(raw_output)
             all_dfs.append(df_llm_batch)
         except Exception as e:
