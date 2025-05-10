@@ -37,18 +37,6 @@ def ner_llama(sentences, sentence_ids):
     Sentence: "{sentences}"
     """
 
-    # for i, sentence in enumerate(sentences, 1):
-    #     prompt += f"{i}. {sentence}\n"
-    # prompt += "\nAnswer:\n"
-
-    # response = openai.ChatCompletion.create(
-    #     model="meta-llama/Llama-3-8b-chat-hf",
-    #     messages=[{"role": "user", "content": prompt}],
-    #     temperature=0,
-    #     max_tokens=2048
-    # )
-    # return response["choices"][0]["message"]["content"]
-
     for sid, sentence in zip(sentence_ids, sentences):
         prompt += f"Sentence {sid}: {sentence}\n"
     prompt += "\nAnswer:\n"
@@ -62,35 +50,9 @@ def ner_llama(sentences, sentence_ids):
     return response["choices"][0]["message"]["content"]
 
 
-# def run_llm_ner(conll_data, df_conll, batch_size=20):
-#     sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
-#     all_dfs = []
-
-#     for i in tqdm(range(0, len(sentences), batch_size), desc="Processing batches"):
-#         batch = sentences[i:i + batch_size]
-#         try:
-#             raw_output = ner_llama(batch, batch_id=i // batch_size)
-#             df_llm_batch = parse_llm_output(raw_output)
-#             allowed_labels = ['B-LOC', 'B-MISC', 'B-ORG', 'B-PER', 'I-LOC', 'I-MISC', 'I-ORG', 'I-PER', 'O']
-#             invalid_rows = df_llm_batch[~df_llm_batch["Label_LLM"].isin(allowed_labels)]
-#             df_llm_batch = df_llm_batch.drop(invalid_rows.index)
-#             all_dfs.append(df_llm_batch)
-#         except Exception as e:
-#             print(f"[!] Ошибка в батче {i // batch_size}: {e}")
-#             continue
-
-#     df_llm = pd.concat(all_dfs, ignore_index=True)
-
-#     precision, recall, f1 = evaluate(df_conll, df_llm)
-#     print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
-
-#     logging.info(f"LLM Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
-
-
-
-
 def run_llm_ner(conll_data, df_conll, batch_size=20):
     sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
+    print(sentences)
     all_dfs = []
 
     for i in tqdm(range(0, len(sentences), batch_size), desc="Processing batches"):
