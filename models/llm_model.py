@@ -27,10 +27,11 @@ def ner_llama(sentences, sentence_ids):
       - MISC — miscellaneous
     For example George Bush would be tagged like that: George (B-PER) Bush (I-PER) - single word per entity strictly.
 
-    Notice that you should label not only entites, you should use 'O' label for words that are not named entities (they can be any part of speech: verbs, prepositions) and include them please in your output.
+    Notice that you should label not only entites, you should use 'O' label for words that are not named entities (they can be any part of speech: verbs, prepositions) and include them please in your output. 
+    It is very important for you to annotate every word in a sentence and include it in an output. 
     Also it is very important that sentences that starts with different numbers are separated. To remember it, include the number of sentence in the output. 
     Distinguish between entities like Britain and British, Germany and German etc. Britain and Germany are LOC (because they are countries) while British and German are MISC (because they mean an affiliation to the country).
-
+    
     Example of an input:
     (21, 'Rare Hendrix song draft sells for almost $ 17,000 .')
     
