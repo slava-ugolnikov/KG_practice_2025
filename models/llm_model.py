@@ -35,14 +35,11 @@ def ner_llama(sentences, sentence_ids):
     Sentence 1: EU rejects German call to boycott British lamb;
     Entities: ('EU', 'B-ORG') ('rejects', 'O') ('German', 'B-MISC') ('call', 'O') ('to', 'O') ('boycott', 'O') ('British', 'B-MISC') ('lamb', 'O') ('.', 'O').
 
-    Sentence: "{sentences}"
-    """
+    Sentences: "{list(zip(sentence_ids, sentences))}"
 
-    for sid, sentence in zip(sentence_ids, sentences):
-        prompt += f"Sentence {sid}: {sentence}\n"
-        print(prompt)
-    prompt += "\nAnswer:\n"
-    
+    Answer:
+    """
+    print(prompt)
 
     response = openai.ChatCompletion.create(
         model="meta-llama/Llama-3-8b-chat-hf",
