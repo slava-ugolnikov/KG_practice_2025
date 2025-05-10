@@ -42,7 +42,6 @@ def ner_llama(sentences, sentence_ids):
 
     Answer:
     """
-    print(prompt)
 
     response = openai.ChatCompletion.create(
         model="meta-llama/Llama-3-8b-chat-hf",
