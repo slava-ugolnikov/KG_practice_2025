@@ -64,6 +64,7 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
         ids = [id for id, text in batch]
         try:
             raw_output = ner_llama(texts, ids)
+            print(raw_output)
             df_llm_batch = parse_llm_output(raw_output, ids[0])
             print(df_llm_batch)
             all_dfs.append(df_llm_batch)
