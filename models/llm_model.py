@@ -13,7 +13,7 @@ openai.api_base = "https://api.together.xyz/v1"
 def ner_llama(sentences, sentence_ids):
     prompt = f"""You've got a task.
 
-    Find all named entities in the following sentence using the BIO tagging format:
+    Find all named entities in the following sentences using the BIO tagging format:
 
     - Allowed labels: "B-LOC", "B-MISC", "B-ORG", "B-PER", "I-LOC", "I-MISC", "I-ORG", "I-PER", "O".
     - Where:
@@ -31,11 +31,14 @@ def ner_llama(sentences, sentence_ids):
     Also it is very important that sentences that starts with different numbers are separated. To remember it, include the number of sentence in the output. 
     Distinguish between entities like Britain and British, Germany and German etc. Britain and Germany are LOC (because they are countries) while British and German are MISC (because they mean an affiliation to the country).
 
+    Example of an input:
+    (21, 'Rare Hendrix song draft sells for almost $ 17,000 .')
+    
     Example of an output:
-    Sentence 1: EU rejects German call to boycott British lamb;
-    Entities: ('EU', 'B-ORG') ('rejects', 'O') ('German', 'B-MISC') ('call', 'O') ('to', 'O') ('boycott', 'O') ('British', 'B-MISC') ('lamb', 'O') ('.', 'O').
+    Sentence 21: 'Rare Hendrix song draft sells for almost $ 17,000 .'
+    Entities: ('Rare', 'O') ('Hendrix', 'B-PER') ('song', 'O') ('draft', 'O') ('sells', 'O') ('for', 'O') ('almost', 'O') ('$ 17,000', 'O') ('.', 'O')
 
-    Sentences: "{list(zip(sentence_ids, sentences))}"
+    Sentences: "{*list(zip(sentence_ids, sentences))}"
 
     Answer:
     """
