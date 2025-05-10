@@ -22,6 +22,6 @@ def load_all_conll_sets():
     rows = []
     for i, sentence in enumerate(train):
         for word, label in sentence:
-            rows.append({"Sentence_ID": i, "Entity": word, "Label": label})
+            rows.append({"Sentence_ID": i+1, "Entity": word, "Label": label})
     df = pd.DataFrame(rows)
     return train, test, valid, df
