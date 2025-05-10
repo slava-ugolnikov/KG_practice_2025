@@ -28,7 +28,8 @@ def ner_llama(sentences, sentence_ids):
     For example George Bush would be tagged like that: George (B-PER) Bush (I-PER) - single word per entity strictly.
 
     Notice that you should label not only entites, you should use 'O' label for words that are not named entities (they can be any part of speech: verbs, prepositions) and include them please in your output.
-    Also it is very important that sentences that starts with different numbers are separated. To remember it, include the number of sentence in the output.
+    Also it is very important that sentences that starts with different numbers are separated. To remember it, include the number of sentence in the output. 
+    Distinguish between entities like Britain and British. Britain is LOC (because it's a country) and British is MISC (because it means an affiliation to the country).
 
     Example of an output:
     Sentence 1: EU rejects German call to boycott British lamb;
@@ -51,7 +52,7 @@ def ner_llama(sentences, sentence_ids):
 
 
 def run_llm_ner(conll_data, df_conll, batch_size=20):
-    pre_sentences = [" ".join([w for w, _ in s]) for s in conll_data[:50]]
+    pre_sentences = [" ".join([w for w, _ in s]) for s in conll_data[:30]]
     rows_id = [i for i in range(1, len(pre_sentences))]
     sentences = list(zip(rows_id, pre_sentences))
     all_dfs = []
