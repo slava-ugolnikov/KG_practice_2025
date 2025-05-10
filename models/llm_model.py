@@ -72,19 +72,6 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
     # print(df_llm.iloc[:100])
     # print(df_llm.Label_LLM.unique())
     # precision, recall, f1 = evaluate(df_conll, df_llm)
-    print(df_conll[:10]
+    print(df_conll[:10])
     # print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
