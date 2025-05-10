@@ -68,8 +68,9 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
             print(f"[!] Ошибка в батче {i // batch_size}: {e}")
             continue
 
-    df_llm = pd.concat(all_dfs, ignore_index=True)
-    print(df_llm.Label_LLM.unique())
+    df_llm = pd.concat(all_dfs, ignore_index=False)
+    print(df_llm.iloc[:20])
+    print(all_dfs.Label_LLM.unique())
     precision, recall, f1 = evaluate(df_conll, df_llm)
     print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
 
