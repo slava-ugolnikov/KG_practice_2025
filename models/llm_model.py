@@ -38,7 +38,7 @@ def ner_llama(sentences, sentence_ids):
     Sentence 21: 'Rare Hendrix song draft sells for almost $ 17,000 .'
     Entities: ('Rare', 'O') ('Hendrix', 'B-PER') ('song', 'O') ('draft', 'O') ('sells', 'O') ('for', 'O') ('almost', 'O') ('$ 17,000', 'O') ('.', 'O')
 
-    Sentences: "{*list(zip(sentence_ids, sentences))}"
+    Sentences: "{list(zip(sentence_ids, sentences))}"
 
     Answer:
     """
