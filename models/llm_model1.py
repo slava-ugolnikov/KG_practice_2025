@@ -64,7 +64,7 @@ def ner_llama(sentences, sentence_ids):
 
 def run_llm_ner(conll_data, df_conll, batch_size=20):
 
-      for i in range(0, len(sentences[:20]), batch_size):
+      for i in range(0, len(sentences[:50]), batch_size):
           batch = sentences[i:i+batch_size]
           ner_llama(batch, save_dir="ner_results", batch_id=i//batch_size)
 
