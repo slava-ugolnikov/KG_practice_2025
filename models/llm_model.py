@@ -69,7 +69,6 @@ def run_llm_ner(conll_data, df_conll, batch_size=20):
             continue
 
     df_llm = pd.concat(all_dfs, ignore_index=False)
-    print(df_llm.Label_LLM.unique())
-    precision, recall, f1 = evaluate(df_conll, df_llm)
+    precision, recall, f1 = evaluate(df_conll, df_llm, pred_col='Label_LLM')
     print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
 
