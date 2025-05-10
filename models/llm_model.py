@@ -29,7 +29,7 @@ def ner_llama(sentences, sentence_ids):
 
     Notice that you should label not only entites, you should use 'O' label for words that are not named entities (they can be any part of speech: verbs, prepositions) and include them please in your output.
     Also it is very important that sentences that starts with different numbers are separated. To remember it, include the number of sentence in the output. 
-    Distinguish between entities like Britain and British. Britain is LOC (because it's a country) and British is MISC (because it means an affiliation to the country).
+    Distinguish between entities like Britain and British, Germany and German etc. Britain and Germany are LOC (because they are countries) while British and German are MISC (because they mean an affiliation to the country).
 
     Example of an output:
     Sentence 1: EU rejects German call to boycott British lamb;
