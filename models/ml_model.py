@@ -24,6 +24,6 @@ def run_ml_ner(conll_data, df_conll):
     df_ml = pd.DataFrame({"Sentence_ID": all_sentence_ids, "Entity": all_tokens, "Label_ML": all_bio_tags})
     df_ml['Label_ML'] = map_spacy_labels_to_conll(df_ml['Label_ML'])
     precision, recall, f1 = evaluate(df_conll, df_ml, pred_col='Label_ML')
-    print(precision, recall, f1)
+    print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
 
     logging.info(f"ML Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
