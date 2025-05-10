@@ -2,15 +2,14 @@ import re
 import pandas as pd
 from sklearn.metrics import precision_score, recall_score, f1_score
 
-def parse_llm_output(text):
+def parse_llm_output(text, ids):
     pattern = r"Entities: ((?:\('.*?', '.*?'\) ?)+)"
     entity_dict = {}
-    counter = 1
     matches = re.findall(pattern, text)
     for entities_raw in matches:
-        entities = re.findall(r"\('(.*?)', '(.*?)'\)", entities_raw)
-        entity_dict[counter] = entities
-        counter += 1
+        for id in ids:
+            entities = re.findall(r"\('(.*?)', '(.*?)'\)", entities_raw)
+            entity_dict[id] = entities
     rows = []
     for sid, ents in entity_dict.items():
         for entity, label in ents:
