@@ -51,9 +51,9 @@ def ner_llama(sentences, sentence_ids):
 
 
 def run_llm_ner(conll_data, df_conll, batch_size=20):
-    sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
-    rows_id = [i for i in range(1, len(sentences))]
-    sentences = list(zip(rows_id, sentences1))
+    pre_sentences = [" ".join([w for w, _ in s]) for s in conll_data[:200]]
+    rows_id = [i for i in range(1, len(pre_sentences))]
+    sentences = list(zip(rows_id, pre_sentences))
     print(sentences)
     all_dfs = []
 
