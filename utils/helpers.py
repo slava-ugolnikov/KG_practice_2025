@@ -66,6 +66,9 @@ def evaluate(df_true, df_pred, pred_col='Label'):
     precision = precision_score(df_merged['Label'], df_merged[pred_col], average='weighted')
     recall = recall_score(df_merged['Label'], df_merged[pred_col], average='weighted')
     f1 = f1_score(df_merged['Label'], df_merged[pred_col], average='weighted')
+    
+    diff_df = df_merged[df_merged['Label'] != df_merged['Label_LLM']]
+    print(diff_df)
     return precision, recall, f1
 
   
