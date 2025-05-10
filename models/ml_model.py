@@ -12,7 +12,7 @@ def run_ml_ner(conll_data, df_conll):
     all_bio_tags = []
     all_sentence_ids = []
 
-    for i, text in enumerate(texts):
+    for i, text in enumerate(texts, start=1):
         doc = nlp(text)
         entities = [(ent.start_char, ent.end_char, ent.label_) for ent in doc.ents]
         biluo_tags = offsets_to_biluo_tags(doc, entities)
