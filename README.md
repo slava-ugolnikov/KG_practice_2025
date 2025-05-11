@@ -70,7 +70,7 @@ cat results.log
 
 ## Results
 
-After running the experiment, we can get values of classification metrics as it is depicted on the table:
+After running the experiment, we can get values of classification metrics as it is shown in table:
 
 | Model                        | Precision |   Recall  |    F1     |
 |------------------------------|----------:|-----------|-----------|
