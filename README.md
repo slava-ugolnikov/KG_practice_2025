@@ -21,6 +21,7 @@ We use the [CoNLL-2003 NER dataset](https://www.kaggle.com/datasets/alaakhaled/c
 
 ```bash
 git clone https://github.com/slava-ugolnikov/KG_practice_2025.git
+%cd KG_practice_2025
 ```
 
 ### 2. Install dependencies
