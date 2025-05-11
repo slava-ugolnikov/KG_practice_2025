@@ -1,9 +1,9 @@
-# Named Entity Recognition Experiments
+# Named Entity Recognition Experiments with SpaCy and Prompting
 
 This project includes two approaches for Named Entity Recognition (NER) with a subequent graph modeling:
 
 * **ML method** based on SpaCy pre-trained model annotation.
-* **LLM method** bsaed on prompting.
+* **LLM method** bsaed on prompting with .
 
 All experiments are performed on the **CoNLL-2003** dataset. Results are logged to the `results.log` file.
 
@@ -65,3 +65,5 @@ python main.py --model ml
 ```bash
 !cat results.log
 ```
+
+
