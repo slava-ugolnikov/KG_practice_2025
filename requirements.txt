@@ -1,8 +1,15 @@
+argparse
+json
 nltk
+tqdm
 opendatasets
+os
 pandas
+re
 spacy
+logging
 matplotlib
 networkx
 openai==0.28
 scikit-learn
+
