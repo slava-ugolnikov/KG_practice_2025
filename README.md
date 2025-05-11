@@ -40,18 +40,15 @@ os.environ["OPENAI_API_KEY"] = "<your-API>"
 ```
 
 ### 4. Download the dataset from kaggle.com
-Notice! You should be registered on kaggle.com
+Notice! Before running the code, download personal kaggle.json file from kaggle.com and put it into secrets/ folder
 
 ```bash
-pip install opendatasets
-
-import opendatasets as od
-od.download("https://www.kaggle.com/datasets/alaakhaled/conll003-englishversion/data")
-
+mkdir -p ~/.kaggle
+cp secrets/kaggle.json ~/.kaggle/
+chmod 600 ~/.kaggle/kaggle.json
+kaggle datasets download alaakhaled/conll003-englishversion
 mkdir -p dataset
-cp conll003-englishversion/train.txt dataset/train.txt
-cp conll003-englishversion/test.txt  dataset/test.txt
-cp conll003-englishversion/valid.txt dataset/valid.txt
+unzip /content/KG_practice_2025/conll003-englishversion.zip -d /content/KG_practice_2025/dataset
 ```
 
 ### 5. Run the main script
@@ -63,4 +60,8 @@ python main.py --model llm
 python main.py --model ml
 ```
 
-Results will be saved in the `results.log` file.
+### 6. Seeing the results
+
+```bash
+!cat results.log
+```
