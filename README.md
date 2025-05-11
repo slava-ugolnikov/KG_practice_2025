@@ -2,10 +2,10 @@
 
 This project includes two approaches for Named Entity Recognition (NER) with a subequent graph modeling:
 
-* **ML method** based on SpaCy pre-trained model annotation.
-* **LLM method** bsaed on prompting with .
+* **ML method** based on SpaCy pre-trained model en_core_web_sm for text annotation.
+* **LLM method** bsaed on prompting with meta-llama/Llama-3-8b-chat-hf model from llama.
 
-All experiments are performed on the **CoNLL-2003** dataset. Results are logged to the `results.log` file.
+All experiments are performed on the **CoNLL-2003** dataset. Results (Precision, Recall and F1-score) are logged to the `results.log` file.
 
 ---
 
@@ -60,10 +60,20 @@ python main.py --model llm
 python main.py --model ml
 ```
 
-### 6. Seeing the results
+### 6. Watch the results
 
 ```bash
 !cat results.log
 ```
+
+## Results
+
+After running the experiment, we can get values of classification metrics as follows:
+
+| Model     | Возраст | Город        |
+|-----------|--------:|--------------|
+| Анна      |      25 | Москва       |
+| Иван      |      30 | Санкт-Петербург |
+| Екатерина |      28 | Новосибирск  |
 
 
