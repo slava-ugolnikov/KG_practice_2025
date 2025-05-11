@@ -58,7 +58,6 @@ def map_spacy_labels_to_conll(labels):
              'I-PRODUCT': 'I-MISC'}
     return labels.map(label_map).fillna('O')
 
-
 def evaluate(df_true, df_pred, pred_col='Label'):
     df_merged = pd.merge(df_true, df_pred, on=['Sentence_ID', 'Entity'])
     print(df_merged)
@@ -66,4 +65,29 @@ def evaluate(df_true, df_pred, pred_col='Label'):
     recall = recall_score(df_merged['Label'], df_merged[pred_col], average='weighted')
     f1 = f1_score(df_merged['Label'], df_merged[pred_col], average='weighted')
     return precision, recall, f1
+
+def load_sentences(filepath):
+    final, sentence = [], []
+    with open(filepath, 'r') as f:
+        for line in f:
+            if line.strip() == '' or line.startswith("-DOCSTART"):
+                if sentence:
+                    final.append(sentence)
+                    sentence = []
+            else:
+                parts = line.split()
+                sentence.append((parts[0], parts[-1]))
+    return final
+
+def load_all_conll_sets():
+    train = load_sentences("dataset/train.txt")
+    test = load_sentences("dataset/test.txt")
+    valid = load_sentences("dataset/valid.txt")
+
+    rows = []
+    for i, sentence in enumerate(train):
+        for word, label in sentence:
+            rows.append({"Sentence_ID": i+1, "Entity": word, "Label": label})
+    df = pd.DataFrame(rows)
+    return train, test, valid, df
 
