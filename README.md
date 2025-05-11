@@ -70,10 +70,10 @@ python main.py --model ml
 
 ## Results
 
-After running the experiment, we can get values of classification metrics as follows:
+After running the experiment, we can get values of classification metrics as it is depicted on the table:
 
 | Model                        | Precision |   Recall  |    F1     |
 |------------------------------|----------:|-----------|-----------|
-|en_core_web_sm (SpaCy)        |     0.9116|     0.8348|     0.8678|
+|en_core_web_sm                |     0.9116|     0.8348|     0.8678|
 |meta-llama/Llama-3-8b-chat-hf |     0.8769|     0.8926|     0.8799|
 
