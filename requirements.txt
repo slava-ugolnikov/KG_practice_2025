@@ -1,13 +1,9 @@
-argparse
 nltk
 tqdm
 opendatasets
-os
 pandas
-re
 spacy
 kaggle
-logging
 matplotlib
 networkx
 openai==0.28
