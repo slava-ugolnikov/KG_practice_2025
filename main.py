@@ -1,6 +1,6 @@
 from models.llm_model import run_llm_ner
 from models.ml_model import run_ml_ner
-from dataset.conll_loader import load_all_conll_sets
+from utils import load_all_conll_sets
 import argparse
 import logging
 
