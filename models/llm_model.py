@@ -4,7 +4,7 @@ import json
 import openai
 import re
 import pandas as pd
-from utils.helpers import parse_llm_output, evaluate
+from utils import parse_llm_output, evaluate
 from tqdm import tqdm
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
