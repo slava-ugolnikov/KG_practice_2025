@@ -2,7 +2,7 @@ import logging
 import spacy
 import pandas as pd
 from spacy.training import offsets_to_biluo_tags, biluo_to_iob
-from utils.helpers import evaluate, map_spacy_labels_to_conll
+from utils import evaluate, map_spacy_labels_to_conll
 
 def run_ml_ner(conll_data, df_conll):
     nlp = spacy.load("en_core_web_sm")
