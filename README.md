@@ -63,7 +63,7 @@ python main.py --model ml
 ### 6. Watch the results
 
 ```bash
-!cat results.log
+cat results.log
 ```
 
 --- 
