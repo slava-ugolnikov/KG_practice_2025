@@ -66,14 +66,14 @@ python main.py --model ml
 !cat results.log
 ```
 
+--- 
+
 ## Results
 
 After running the experiment, we can get values of classification metrics as follows:
 
-| Model     | Возраст | Город        |
-|-----------|--------:|--------------|
-| Анна      |      25 | Москва       |
-| Иван      |      30 | Санкт-Петербург |
-| Екатерина |      28 | Новосибирск  |
-
+| Model                        | Precision |   Recall  |    F1     |
+|------------------------------|----------:|-----------|-----------|
+|en_core_web_sm (SpaCy)        |     0.9116|     0.8348|     0.8678|
+|meta-llama/Llama-3-8b-chat-hf |     0.8769|     0.8926|     0.8799|
 
