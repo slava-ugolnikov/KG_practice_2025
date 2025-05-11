@@ -43,15 +43,15 @@ os.environ["OPENAI_API_KEY"] = "<your-API>"
 Notice! You should be registered on kaggle.com
 
 ```bash
-!pip install opendatasets
+pip install opendatasets
 
 import opendatasets as od
 od.download("https://www.kaggle.com/datasets/alaakhaled/conll003-englishversion/data")
 
-!mkdir -p dataset
-!cp conll003-englishversion/train.txt dataset/train.txt
-!cp conll003-englishversion/test.txt  dataset/test.txt
-!cp conll003-englishversion/valid.txt dataset/valid.txt
+mkdir -p dataset
+cp conll003-englishversion/train.txt dataset/train.txt
+cp conll003-englishversion/test.txt  dataset/test.txt
+cp conll003-englishversion/valid.txt dataset/valid.txt
 ```
 
 ### 5. Run the main script
